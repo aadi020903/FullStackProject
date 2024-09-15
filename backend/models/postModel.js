@@ -26,22 +26,13 @@ const postSchema = new mongoose.Schema(
         ],
         comments: [
         {
-            commentUserId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            },
-            comment: {
-            type: String,
-            },
-            commentLike: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
-            },
-            ],
-        },
+            ref: "Comment",
+        }
         ],
     
     },
     { timestamps: true }
 );
+
+module.exports = mongoose.model("Post", postSchema);

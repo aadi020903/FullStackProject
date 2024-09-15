@@ -19,9 +19,12 @@ const corsOptions = {
   app.options('*', cors(corsOptions));
   app.use(cors(corsOptions));
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.send('Welocme to My App');
     })
 
+//user register
+app.use('/api', require('./src/routes/user_route'));
+
 app.listen(process.env.PORT, () => {
-    console.log('Server is running on http://localhost:' + process.env.PORT);
+    console.log(`Server is running on ${process.env.HOST+process.env.PORT}`);
 });
