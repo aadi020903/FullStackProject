@@ -16,12 +16,12 @@ router.post("/login", user_login);
 
 router.post("/register", user_register);
 
-router.post("/logout",user_auth,user_logout)
+// router.post("/logout",user_auth,user_logout)
 
-router.post("/sendOtp",sendOtp);
+// router.post("/sendOtp",sendOtp);
 
-router.get("/profile",user_auth,user_profile);
+// router.get("/profile",user_auth,user_profile);
 
-router.get("/allUsers",user_auth,allUsers);
+// router.get("/allUsers",user_auth,allUsers);
 
 module.exports = router;
