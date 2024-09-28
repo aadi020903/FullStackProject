@@ -203,3 +203,16 @@ exports.editProfile = async (req, res) => {
     });
   }
 }
+
+exports.suggestUser = async (req, res) => {
+  try {
+    const suggestUser = await user_model.find({_id:{$ne:req.id}}).select("-password");
+  } catch (error) {
+    console.log(error);
+    return res.status(501).json({
+      message: "Internal server error",
+      success: false,
+    });
+    
+  }
+}
