@@ -1,27 +1,25 @@
 const express = require("express");
 const router = express.Router();
 
-const user_auth = require("../../middlewares/user_auth.js");
+const {isAuthenticated} = require("../../middlewares/isauthenticated");
+const {uplaod} = require("../../middlewares/multer");
+const { get_user_profile, editProfile, update_user_password, user_logout } = require("../controllers/user_controller");
+
 
 const {
   user_login,
   user_register,
-  user_logout,
-  sendOtp,
-  user_profile,
-  allUsers
+
 } = require("../controllers/user_controller");
 
-router.post("/login", user_login);
+router.route("/register").post(user_register);
+router.route("/login").post(user_login);
+router.route("/:id/profile").get(isAuthenticated, get_user_profile);
+router.route("/profile/editProfile").post(isAuthenticated, editProfile);
+router.route("/profile/update/password").post(isAuthenticated, update_user_password);
+router.route("/logout").get(isAuthenticated, user_logout);
 
-router.post("/register", user_register);
 
-// router.post("/logout",user_auth,user_logout)
 
-// router.post("/sendOtp",sendOtp);
-
-// router.get("/profile",user_auth,user_profile);
-
-// router.get("/allUsers",user_auth,allUsers);
 
 module.exports = router;
