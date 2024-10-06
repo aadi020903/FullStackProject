@@ -1,6 +1,7 @@
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
-const user_model = require("../models/userModel");
+import dotenv from "dotenv";
+dotenv.config();
+import jwt from "jsonwebtoken";
+import user_model from "../src/models/user_model.js";
 
 // Middleware for handling auth
 async function user_auth(req, res, next) {

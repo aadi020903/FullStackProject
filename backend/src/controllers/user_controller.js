@@ -1,7 +1,7 @@
 const user_model = require("../../models/userModel");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const axios = require("axios");
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
 const { default: cloudinary } = require("../../public/utils/cloudinary");
 
 exports.user_register = async (req, res) => {

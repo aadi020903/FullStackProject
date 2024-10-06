@@ -1,11 +1,14 @@
-let dotenv = require("dotenv");
+import dotenv from 'dotenv';
 dotenv.config();
-const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
+import connectDB from './Database/dbconnection.js';
+import Router from './src/routes/user_route.js';
 const app = express();
 app.use(express.json());
-const {connectDB }=require('./Database/dbconnection');
+
 connectDB();
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -18,12 +21,11 @@ const corsOptions = {
   // Handle CORS preflight requests
   app.options('*', cors(corsOptions));
   app.use(cors(corsOptions));
-app.get('/', (req, res) => {
-    res.send('Welocme to My App');
-    })
 
-//user register
-app.use('/api', require('./src/routes/user_route'));
+
+
+// Routes
+app.use('/api/v1/user', Router);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on ${process.env.HOST+process.env.PORT}`);
