@@ -5,7 +5,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import connectDB from './Database/dbconnection.js';
-import Router from './src/routes/user_route.js';
+import userRoutes from './src/routes/user_route.js';
 const app = express();
 app.use(express.json());
 
@@ -25,7 +25,7 @@ const corsOptions = {
 
 
 // Routes
-app.use('/api/v1/user', Router);
+app.use('/api/v1/user', userRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on ${process.env.HOST+process.env.PORT}`);

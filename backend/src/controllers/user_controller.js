@@ -1,10 +1,10 @@
-const user_model = require("../../models/userModel");
+import User from "../../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const { default: cloudinary } = require("../../public/utils/cloudinary");
+import  cloudinary  from "../../public/utils/cloudinary.js";
 
-exports.user_register = async (req, res) => {
+export const userRegister = async (req, res) => {
   const { username, Name, email, password } = req.body;
   if (!username || !Name || !email || !password) {
     return res.status(400).json({
@@ -13,7 +13,7 @@ exports.user_register = async (req, res) => {
     });
   }
   try {
-    const existingUser = await user_model.findOne({
+    const existingUser = await User.findOne({
       email: email,
     });
     if (existingUser) {
@@ -25,7 +25,7 @@ exports.user_register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await user_model.create({
+    const newUser = await User.create({
       username,
       Name,
       password: hashedPassword,
@@ -52,7 +52,7 @@ exports.user_register = async (req, res) => {
   }
 };
 
-exports.user_login = async (req, res) => {
+export const userLogin = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({
@@ -61,7 +61,7 @@ exports.user_login = async (req, res) => {
     });
   }
   try {
-    const user = await user_model.findOne({
+    const user = await User.findOne({
       email: email,
     });
     if (!user) {
@@ -119,7 +119,7 @@ exports.user_login = async (req, res) => {
   }
 };
 
-exports.user_logout = async (_, res) => {
+export const userLogout = async (_, res) => {
   try {
     return res.cookie("token", "", { maxAge: 0 }).json({
       message: "Logged out successfully",
@@ -134,10 +134,10 @@ exports.user_logout = async (_, res) => {
   }
 };
 
-exports.getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
     const userId = req.params.id;
-    const user = await user_model.findById(userId);
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(400).json({
@@ -158,7 +158,7 @@ exports.getProfile = async (req, res) => {
     });
   }
 };
-exports.editProfile = async (req, res) => {
+export const editProfile = async (req, res) => {
   try {
     const userId = req.id;
     const { username, Name, bio, gender } = req.body;
@@ -168,7 +168,7 @@ exports.editProfile = async (req, res) => {
       const fileUri = getDataUri(profilePicture);
       cloudResponse = await cloudinary.uploader.upload(fileUri);
     }
-    const user = await user_model.findById(userId);
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(400).json({
         message: "User not found",
@@ -206,9 +206,9 @@ exports.editProfile = async (req, res) => {
   }
 };
 
-exports.getSuggestedUsers = async (req, res) => {
+export const getSuggestedUsers = async (req, res) => {
   try {
-    const suggestedUsers = await user_model
+    const suggestedUsers = await User
       .find({ _id: { $ne: req.id } })
       .select("-password");
     if (!suggestedUsers) {
@@ -231,7 +231,7 @@ exports.getSuggestedUsers = async (req, res) => {
   }
 };
 
-exports.followUser = async (req, res) => {
+export const followUser = async (req, res) => {
   try {
     const followkrneWala = req.id;
     const followHoneWala = req.params.id;
@@ -242,8 +242,8 @@ exports.followUser = async (req, res) => {
       });
     }
 
-    const user = await user_model.findById(followkrneWala);
-    const userToFollow = await user_model.findById(followHoneWala);
+    const user = await User.findById(followkrneWala);
+    const userToFollow = await User.findById(followHoneWala);
     if (!user || !userToFollow) {
       return res.status(400).json({
         message: "User not found",
